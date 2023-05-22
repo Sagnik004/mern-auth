@@ -1,5 +1,7 @@
 import asyncHandler from 'express-async-handler';
 
+import User from '../models/userModel.js';
+
 /*
  * @description   Auth user and set token
  * route          POST /api/users/auth
