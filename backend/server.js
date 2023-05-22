@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 
+import connectDB from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
@@ -22,5 +23,8 @@ app.get('/', (req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-// Start listening...
-app.listen(port, () => console.log(`Server started on port ${port}...`));
+// Connect to DB and start listening...
+(async function () {
+  await connectDB();
+  app.listen(port, () => console.log(`Server started on port ${port}...`));
+})();
