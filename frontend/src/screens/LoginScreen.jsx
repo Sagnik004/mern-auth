@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useLoginMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import FormContainer from '../components/FormContainer';
+import Loader from '../components/Loader';
 
 const LoginScreen = () => {
   const navigate = useNavigate();
@@ -61,6 +62,8 @@ const LoginScreen = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
+
+        { isLoading && <Loader />}
 
         <Button type='submit' variant='primary' className='mt-3'>
           Sign In
