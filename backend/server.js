@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
@@ -23,9 +24,20 @@ app.use(cookieParser());
 // Routes
 app.use('/api/users', userRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Server is ready');
-});
+// If in production then expose dist folder as static, and provide route
+// to send index.html for loading the UI. Pre-requisite: must run 
+// npm run build from the frontend directory.
+if (process.env.NODE_ENV === 'production') {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, 'frontend/dist')));
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
+  );
+} else {
+  app.get('/', (req, res) => {
+    res.send('Server is ready');
+  });
+}
 
 // Error middlewares
 app.use(notFound);
